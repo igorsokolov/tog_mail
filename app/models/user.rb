@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
   def create_default_folders!
     if self.recently_activated?
       default_folders = Tog::Config["plugins.tog_mail.messages.default_folders"] || ""
-      default_folders.each(" "){|folder_type|
+      default_folders.split(/\s/).each {|folder_type|
         folder_type.strip!
         unless self.folders.find_by_name(folder_type)
           self.folders.create(:name => folder_type, :deletable => false, :folder_type => folder_type)
